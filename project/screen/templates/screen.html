@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>숲이 끝나는 곳 | FOREST</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Noto Sans KR", Arial, sans-serif;
+            color: #333;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* HEADER */
+        header {
+            border-bottom: 1px solid #eee;
+        }
+
+        .top {
+            width: min(1200px, 90%);
+            height: 90px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .menu li {
+            font-size: 15px;
+        }
+
+
+        /* FOOTER */
+        footer {
+            background: #333;
+            color: #aaa;
+        }
+
+        .footer-inner {
+            width: min(1200px, 90%);
+            margin: auto;
+            padding: 45px 0;
+        }
+
+        .footer-menu {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .footer-menu a {
+            color: #ddd;
+            font-size: 13px;
+        }
+
+        .footer-info {
+            font-size: 12px;
+            line-height: 2;
+        }
+
+
+
+        .wrap { width: min(1200px, 90%); margin: auto; }
+        .menu a[aria-current] { border-bottom: 2px solid #333; padding-bottom: 7px; }
+        .hero {
+            color: white;
+            background: linear-gradient(90deg, rgba(20, 25, 23, .93), rgba(20, 25, 23, .35)),
+                url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=85")
+                center 54% / cover no-repeat #343c37;
+        }
+        .hero-inner { padding: 72px 0; display: flex; align-items: center; gap: 44px; }
+        .poster {
+            width: 180px; aspect-ratio: 2 / 3; object-fit: cover;
+            flex: none; border: 1px solid rgba(255, 255, 255, .4); background: #515951;
+        }
+        .movie-type { font-size: 14px; margin-bottom: 12px; }
+        h1 { font-size: clamp(30px, 5vw, 56px); font-weight: 600; letter-spacing: -.045em; }
+        .metadata { margin-top: 12px; color: #efefef; line-height: 1.7; }
+        .hero-link {
+            display: inline-block; margin-top: 25px; padding: 11px 20px;
+            background: #fff; color: #333; font-size: 14px; font-weight: 700;
+        }
+        .hero-link:hover { background: #eee; }
+        .content { padding: 34px 0 72px; }
+        .breadcrumb { display: flex; gap: 10px; font-size: 13px; color: #666; margin-bottom: 28px; }
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px 28px; border-bottom: 2px solid #333; }
+        .tabs a { padding: 0 0 13px; font-size: 15px; }
+        .tabs a:hover, .breadcrumb a:hover { text-decoration: underline; }
+        .section { padding: 30px 0; border-bottom: 1px solid #eee; scroll-margin-top: 20px; }
+        h2 { margin-bottom: 14px; font-size: 23px; font-weight: 600; }
+        .section p { line-height: 1.8; color: #555; max-width: 70ch; }
+        .credits { display: flex; flex-wrap: wrap; gap: 14px; }
+        .credits li { background: #f7f7f7; padding: 14px 18px; min-width: 128px; }
+        .credits span { display: block; margin-top: 5px; color: #666; font-size: 13px; }
+        .photo { width: min(100%, 540px); aspect-ratio: 16 / 9; object-fit: cover; display: block; }
+        figcaption { margin-top: 8px; color: #666; font-size: 13px; }
+        @media (max-width: 768px) {
+            .top { height: auto; padding: 17px 0; flex-wrap: wrap; gap: 14px; }
+            .menu, .footer-menu { gap: 10px 18px; flex-wrap: wrap; }
+            .hero-inner { gap: 20px; padding: 40px 0; }
+            .poster { width: clamp(85px, 26vw, 140px); }
+            .metadata { font-size: 13px; }
+            .content { padding-bottom: 42px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+<div class="top">
+<div class="logo">
+            FOREST
+        </div>
+<ul class="menu">
+<li><a href="#">소개</a></li>
+<li><a href="board_list2.html">뉴스</a></li>
+<li><a href="#">학생관리</a></li>
+<li><a href="#">학과정보</a></li>
+<li><a href="#">문의</a></li>
+<li><a href="movie_detail.html" aria-current="page">영화</a></li>
+</ul>
+</div>
+</header>
+
+<main>
+    <!-- 영화 제목, 포스터, 기본 정보를 이곳에서 바꾸세요. -->
+    <section class="hero" aria-labelledby="movie-title">
+        <div class="wrap hero-inner">
+            <img class="poster" src="https://images.unsplash.com/photo-1724075683157-fb7a7b3b2537?auto=format&amp;fit=crop&amp;w=500&amp;q=85"
+                 alt="안개가 내려앉은 산골짜기" width="180" height="270">
+            <div>
+                <p class="movie-type">영화 · 예시 작품</p>
+                <h1 id="movie-title">숲이 끝나는 곳</h1>
+                <p class="metadata">2026 · 한국 · 드라마 · 106분 · 12세 관람가</p>
+                <a class="hero-link" href="#story">작품 소개 보기</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="wrap content">
+        <nav class="breadcrumb" aria-label="현재 위치">
+            <span>FOREST</span><span aria-hidden="true">›</span><span>영화 상세</span>
+        </nav>
+        <nav class="tabs" aria-label="영화 상세 메뉴">
+            <a href="#story">작품 소개</a>
+            <a href="#cast">출연·제작</a>
+            <a href="#gallery">갤러리</a>
+        </nav>
+
+        <section class="section" id="story">
+            <h2>작품 소개</h2>
+            <p>오래 비워 둔 집을 정리하러 고향에 돌아온 지우는 아버지가 남긴 지도 한 장을 발견합니다.
+                지도에 표시된 숲길을 따라가던 지우는 오랜 친구 현우를 만나고, 마을을 떠나던 날 끝내 전하지 못했던 이야기를 꺼냅니다.</p>
+        </section>
+        <section class="section" id="cast">
+            <h2>출연·제작</h2>
+            <ul class="credits">
+                <li>한서윤 <span>감독</span></li>
+                <li>김하진 <span>지우 역</span></li>
+                <li>이도현 <span>현우 역</span></li>
+            </ul>
+        </section>
+        <section class="section" id="gallery">
+            <h2>갤러리</h2>
+            <figure>
+                <img class="photo" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&amp;fit=crop&amp;w=1000&amp;q=85"
+                     alt="산과 나무로 둘러싸인 계곡" width="540" height="304" loading="lazy">
+                <figcaption>작품 분위기를 보여주는 예시 사진 · Unsplash</figcaption>
+            </figure>
+        </section>
+    </div>
+</main>
+<footer>
+
+    <div class="footer-inner">
+
+        <div class="footer-menu">
+            <a href="#">회사소개</a>
+            <a href="#">오시는 길</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+            <a href="#">이메일무단수집거부</a>
+        </div>
+
+        <div class="footer-info">
+
+            포레스트 리조트<br>
+            충청북도 제천시 백운면 금봉로 365<br>
+            대표번호 : 043-649-6000
+
+        </div>
+
+    </div>
+
+</footer>
+</body>
+</html>
