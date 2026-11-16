@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <title>무게예측</title>
+    <script>
+        function predict(){
+            const data = $("#data").val();              //// input의 입력값 가져오기
+            $.ajax({
+                url:'/ajax_data/',                  // 보내는링크주소
+                type:'post',                             // 전송방식
+                headers:{'X-CSRFToken':'{{csrf_token}}'},// csrf_token
+                data:{'data':data},                                 // html에서 django보내는 데이터
+                dataType:'json',                         // 받는데이터 타입 : json,xml,text
+                success:function(data){
+                    alert('성공');
+                    console.log(data);
+                    $('#result').text('입력데이터: ' + data.result.join(', '));
+                    $('#result2').text('예측무게: ' + data.result2 + 'g');
+                },
+                error:function(){
+                    alert('실패');
+                }
+            }); //ajax
+        } // predict버튼
+    </script>
+</head>
+<body>
+    <h1>메인페이지</h1>
+    <div>
+        <label> 길이, 높이, 넓이를 입력하세요. 예: 40,11.73,7.22</label><br>
+        <form method="post" action="/">
+            {% csrf_token %}
+            <input type='text' name='data' id='data'>
+            <button type='button' onclick='predict()' style='cursor: pointer;'> 예측 </button>
+        </form>
+        <br>
+        <br>
+        <div id='result'>입력데이터:{{result}} </div>
+        <div id='result2'>예측무게:{{result2}}g </div>
+    </div>
+
+</body>
+</html>
