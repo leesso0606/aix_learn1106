@@ -3,25 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <title>무게예측</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>메인 페이지</title>
     <script>
-        function predict(){
-            const data = $("#data").val();              //// input의 입력값 가져오기
+        function sendBtn(){
+            const send_data = $("#data").val();              //// input의 입력값 가져오기
+            console.log('데이터:'+send_data);
+
+            //views.py 로 데이터 전달
             $.ajax({
                 url:'/ajax_data/',                  // 보내는링크주소
                 type:'post',                             // 전송방식
-                headers:{'X-CSRFToken':'{{csrf_token}}'},// csrf_token
-                data:{'data':data},                                 // html에서 django보내는 데이터
+                headers:{'X-CSRFToken':'{{csrf_token}}'},// csrf_token -> 있어야 파일 보내기 가능
+                data:{'data':send_data},                 // html에서 django보내는 데이터
                 dataType:'json',                         // 받는데이터 타입 : json,xml,text
                 success:function(data){
                     alert('성공');
                     console.log(data);
-                    $('#result').text('입력데이터: ' + data.result.join(', '));
-                    $('#result2').text('예측무게: ' + data.result2 + 'g');
+                    const chart_data= Number(data.resule_data)
+                    $('#result').text(send_data);
+                    $('#result2').text(data.resule_data);
+
+
+                    // 차트js를 통해 그래프 생성
+                    const ctx = document.getElementById('myChart');
+
+                    let chartStatus = Chart.getChart('myChart');
+                        if(chartStatus != undefined){
+                            console.log("success");
+                            chartStatus.destroy();
+                            };
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                        labels: ['예측무게'],
+                        datasets: [{
+                            label: '예측무게',
+                            data: [chart_data],
+                            borderWidth: 1,
+                            barThickness : 50 //막대 두께를 50px로 고정
+                        }]
+                        },
+                        options: {
+                        scales: {
+                            y: {
+                            beginAtZero: true
+                            }
+                        }
+                        }
+                    }); // 차트
+
                 },
-                error:function(){
-                    alert('실패');
+                fail:function(){
+                    alert('예측하는데 오류가 발생했습니다. 다시 시도해주세요');
                 }
             }); //ajax
         } // predict버튼
@@ -30,17 +66,25 @@
 <body>
     <h1>메인페이지</h1>
     <div>
-        <label> 길이, 높이, 넓이를 입력하세요. 예: 40,11.73,7.22</label><br>
-        <form method="post" action="/">
-            {% csrf_token %}
+        <label> 길이, 높이, 넓이를 입력하세요.</label><br>
             <input type='text' name='data' id='data'>
-            <button type='button' onclick='predict()' style='cursor: pointer;'> 예측 </button>
-        </form>
+            <button type='button' onclick='sendBtn()' style='cursor: pointer;'> 예측 </button>
         <br>
         <br>
-        <div id='result'>입력데이터:{{result}} </div>
-        <div id='result2'>예측무게:{{result2}}g </div>
+        <div>입력데이터:<spen id='result'>데이터 입력필요</spen> </div>
+        <div>예측무게:<spen id='result2'>0</spen>g </div>
     </div>
+
+    <!-- 그래프 -->
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <!-- 그래프 -->
+
+
+    <script>
+    
+    </script>
 
 </body>
 </html>

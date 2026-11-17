@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <title>메인페이지</title>
+
+    <script>
+        function predictBtn(){
+            const predict_data = $('#data').val();
+            $.ajax({
+                url:'/ajax_data/',                // 보내는링크주소
+                type:'post',                             // 전송방식
+                headers:{'X-CSRFToken':'{{csrf_token}}'},// csrf_token
+                data:{'data': predict_data},                                 // html에서 django보내는 데이터
+                dataType:'json',                         // 받는데이터 타입 : json,xml,text
+                success:function(data){
+                    // 성공시 넘어오는 데이터 : {'result':예측 생선, 'result2':예측생선 확률, 'result_all':모든 생선 확률}
+                    alert('성공');
+                    console.log(data);
+                    // 생선종류, 확률
+                    $("#in_data").text(predict_data)
+                    $("#result").text(data.result)
+                    $("#result2").text(data.result2)
+
+                    //그래프
+                    const chart_data = data.result_all; // numpy(이미 숫자타입)을 통채로 받음
+                    const ctx = document.getElementById('myChart');
+
+                    let chartStatus = Chart.getChart("myChart");
+                    if(chartStatus != undefined){
+                        console.log("destroy success");
+                        chartStatus.destroy(); //리셋
+                    }
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                        labels: ['Bream', 'Parkki', 'Perch', 'Pike', 'Roach', 'Smelt', 'Whitefish'],
+                        datasets: [{
+                            label: '생선종류',
+                            data:chart_data, // tolist로 이미 배열상태
+                            borderWidth: 1
+                        }]
+                        },
+                        options: {
+                        scales: {
+                            y: {
+                            beginAtZero: true
+                            }
+                        }
+                        }
+                    });// 그래프
+                },
+                error:function(){
+                    alert('실패');
+                }
+
+            }); // ajax
+
+
+        }; //predictBtn()
+    </script>
+</head>
+
+<body>
+    <h1> 메인페이지 </h1>
+    <div>
+        <label> 생선의 무게, 길이,대각선, 높이, 넓이를 입력하세요.(290.0, 26.3,31.2,12.48,4.3056)</label><br/>
+        <input type='text' name='data' id='data'>
+        <button type='button' onclick='predictBtn()'>예측</button>
+        <br>
+        <br>
+        <div>입력 데이터 : <span id='in_data'>데이터를 입력하시오</span></div>
+        <div>예측 생선 : <span id='result'>Bream</span> (예측확률 : <span id='result2'> 0 </span>)</div>
+    </div>
+
+    <!-- 그래프   -->
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <!-- 그래프   -->
+    
+</body>
+</html>
